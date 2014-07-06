@@ -1,0 +1,535 @@
+<script src="/socket.io/socket.io.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js"></script>
+<script src="./teoria.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript" src="./number-polyfill.min.js"></script>
+<script src="./Synesthesia.js" type="text/javascript"></script>
+<script src="./SpaceW3.js" type="text/javascript"></script>
+<script src="./scales.js" type="text/javascript"></script>
+<script src="./logger.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://google-developers.appspot.com/web/fundamentals/resources/samples/css/normalize.css">
+<link rel="stylesheet" type="text/css" href="./number-polyfill.css" />
+<link rel="stylesheet" type="text/css" href="./layouts-common.css">
+
+<div class="container">
+<div class="c1"><i> 
+<p>List of input</p><code>MIDI channels</code>
+<ul id="in">
+<li>I</li><li>II</li><li>III</li><li>IV</li><li>V</li><li>VI</li><li>VII</li><li>VIII</li><li>IX</li><li>X</li><li>XI</li><li>XII</li><li>XIII</li><li>XIV</li><li>XV</li><li>XVI</li>
+</ul>
+ <object id="Jazz1" classid="CLSID:1ACE1618-1C7D-4561-AEE1-34842AA85E90" class="hidden">
+  <object id="Jazz2" type="audio/x-jazz" class="hidden">
+<p>This <br>page<br>requires <br>
+  <a href="http://jazz-soft.net">Jazz-Plugin</a><br> <img src="./images/ear.png" > &nbsp!!! Restart <br>the browser <br>
+<img src="./images/chrome.ico" ><br>after installing </p>
+  </object>
+</object></i>
+</div>
+<div class="c2" id="c2"><input id="foo"/>
+<div id=here></div><b>Jazz Time</b>
+<span id="time"></span>
+<p><b>Note: <span id="note"></span></b></p>
+<div><input type="number" name="numberMin" id="period" min="0" value = 122 />
+<button id="play" >Play</button><b> Sustain: </b><input id="sustain" type="checkbox" onchange=" handleChange(this);" >
+<input type="radio" name="temperament" id="12_edo"   value = 4 checked /><code> 12-edo </code>
+<input type="radio" name="temperament" id="31_edo#"  value = 0 /><i><b> 31-edo # </b></i>
+<input type="radio" name="temperament" id="31_edob"  value = 1 /><i><b> 31-edo b </b></i>
+<input type="radio" name="temperament" id="53_edo#"  value = 2 /><i><b> 53-edo # </b></i>
+<input type="radio" name="temperament" id="53_edob"  value = 3 /><i><b> 53-edo b </b><i/>
+</div>
+
+<div id="track1">
+    <div id="opacity" title="opacity"></div>
+    <p id="debug1" hidden> </p>
+</div><br>
+<div id="track2">
+    <div id="modulation" title="modulation"> </div>
+    <div id="pan" title="pan"> </div>
+    <div id="volume" title="volume"> </div>
+  </div>
+  <p id="debug2"> </p>
+<p>
+<b>MIDI In: </b><select id="midiIn"><option value="">Not connected</option></select>
+<b>MIDI Out: </b><select id="midiOut"></select><b> Flow: </b><button id="flow" onclick='Flow(); '>Transmit</button>
+ </p>
+<p><b>Sound: </b><select id="midiSnd"></select>
+<b>Synesthesia: </b><select id="Syn"></select>
+<button id="panic" >Panic</button></p>
+
+<div id=piano>
+<div class=ebony>
+<span id=1></span><span id=3></span><span class=break></span><span id=6></span><span id=8></span><span id=10></span><span class=break></span><span id=13></span><span id=15></span><span class=break></span><span id=18></span><span id=20></span><span id=22></span><span class=break></span><span id=25></span><span id=27></span><span class=break></span><span id=30></span><span id=32></span><span id=34></span><span class=break></span><span id=37></span><span id=39></span><span class=break></span><span id=42></span><span id=44></span><span id=46></span><span class=break></span><span id=49></span><span id=51></span><span class=break></span><span id=54></span><span id=56></span><span id=58></span><span class=break></span><span id=61></span><span id=63></span><span class=break></span><span id=66></span><span
+id=68></span><span id=70></span><span class=break></span><span id=73></span><span id=75></span><span class=break></span><span id=78></span><span id=80></span><span id=82></span><span class=break></span><span id=85></span><span id=87></span><span class=break></span><span id=90></span><span id=92></span><span id=94></span><span class=break></span><span id=97></span><span id=99></span><span class=break></span><span id=102></span><span id=104></span><span id=106></span><span class=break></span><span id=109></span><span id=111></span><span class=break></span><span id=114></span><span id=116></span><span id=118></span><span class=break></span><span id=121></span><span id=123></span><span class=break></span><span id=126></span>
+</div>
+<div class=ivory>
+<span id=0></span><span id=2></span><span id=4></span><span id=5></span><span id=7></span><span id=9></span><span id=11></span><span id=12></span><span id=14></span><span id=16></span><span id=17></span><span id=19></span><span id=21></span><span id=23></span><span id=24></span><span id=26></span><span id=28></span><span id=29></span><span id=31></span><span id=33></span><span id=35></span><span id=36></span><span id=38></span><span id=40></span><span id=41></span><span id=43></span><span id=45></span><span id=47></span><span id=48></span><span id=50></span><span id=52></span><span id=53></span><span id=55></span><span id=57></span><span id=59></span><span id=60></span><span id=62></span><span id=64></span><span id=65></span><span id=67></span><span id=69></span><span id=71></span><span id=72></span><span
+id=74></span><span id=76></span><span id=77></span><span id=79></span><span id=81></span><span id=83></span><span id=84></span><span id=86></span><span id=88></span><span id=89></span><span id=91></span><span id=93></span><span id=95></span><span id=96></span><span id=98></span><span id=100></span><span id=101></span><span id=103></span><span id=105></span><span id=107></span><span id=108></span><span id=110></span><span id=112></span><span id=113></span><span id=115></span><span id=117></span><span id=119></span><span id=120></span><span id=122></span><span id=124></span><span id=125></span><span id=127></span>
+</div>
+</div>
+<b>Scale: </b><select id="_scales"></select>
+<div id=room></div>
+
+</div>
+<div class="c3">
+<p>List of output</p><code>MIDI channels</code>
+<ul id="out">
+<li>I</li><li>II</li><li>III</li><li>IV</li><li>V</li><li>VI</li><li>VII</li><li>VIII</li><li>IX</li><li>X</li><li>XI</li><li>XII</li><li>XIII</li><li>XIV</li><li>XV</li><li>XVI</li>
+</ul>
+</div>
+</div>
+
+<script type="text/javascript">
+
+App = {}
+App.socket = io.connect()
+   
+jQuery.noConflict();
+DEBUGMODE = true;
+
+Jazz = document.getElementById("Jazz1"); if(!Jazz || !Jazz.isJazz) Jazz = document.getElementById("Jazz2");
+//t=Jazz.Time();
+playing=0; trans=0;
+var note, current_channel, current_in, current_out, current_snd;
+tonic = 0; current_scale = 0; steps = keys;
+selSyn=$("Syn"); selIn=$("midiIn"); selOut=$("midiOut"); selSnd=$("midiSnd");
+
+Event.observe(window, 'load', Prompt, false);
+
+function Prompt(){
+  if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {steps = _keys}
+  $("midiSnd").selectedIndex=110; changeSnd();
+  var room = prompt('type a room name, "jazz"', "jazz")
+  // Emit ready event with room name.
+  App.socket.emit('ready', room)   
+}
+
+window.onbeforeunload = function(){
+  App.socket.disconnect();
+};
+
+App = {}
+App.socket = io.connect()
+
+// Listen for the announce event.
+App.socket.on('announce', function(data){
+  Room = $("room"); 
+  var newP = new Element('p').update(data.message+ new Date().toString());
+  Room.insert(newP);
+})
+ 
+App.socket.on('time', App.time);
+
+App.time = function(data){
+  var a = data.a; var b = data.b; var c = data.c;
+  exe(message,a,b,c);
+  var k=document.getElementById(b); var Class = {0:"",127:"on"};
+  k.className = Class[c];
+  // control the background
+  cntl_bg(b); notate(b);
+}
+
+colorMap = [];
+ 
+function cntl_bg(n){ map = colorMap[n] ;
+  if (typeof map !== 'undefined') 
+  var c2 = $('c2'); if (map) c2.setStyle({backgroundColor: map.hsl});	
+}
+
+function notate(n){
+  var scientific = teoria.note.fromMIDI(n).scientific(); $('note').update("midi number: <b>" +  n + "</b> scientific:<b> " + scientific + "</b>");
+}
+
+App.socket.on('notes', function(data){
+  var a = data.notes.a; var b = data.notes.b; var c = data.notes.c;
+  exe(message,a,b,c);
+  var k=document.getElementById(b); var Class = {0:"",127:"on"};
+  k.className = Class[c];
+  cntl_bg(b); notate(b);
+}) 
+
+// Callback function
+function midiProc(t,a,b,c){ 
+data = {a: a, b: b, c: c}
+  //client
+  if (trans==0) App.midi(data)
+  //sending mididata to server      
+  if (trans==1) App.socket.emit('mididata', data) 
+}
+
+App.socket.on('midi', App.midi)
+App.midi = function(data){ 
+  midi(data);
+}
+
+App.socket.on('midi', function(data){
+  if (data) midi(data);
+}) 
+
+function message(x,y,z){
+  Jazz.MidiOut(x,y,z);
+}
+
+function channels(rm, key, updown){
+  var vlm = [0,vol];
+  var chnn = [[0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,0x88,0x8a,0x8b,0x8c],[0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,0x98,0x9a,0x9b,0x9c]];
+  exe(message,chnn[updown][rm],key,vlm[updown]);    
+}
+
+function output(rm, key, updown){
+  var li = $("out").getElementsByTagName('LI'); var clr = ['#cde', '#b9ff61']; 
+  var chnset = {0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:10,10:11,11:12,12:13,13:14,14:15,15:16}
+  li[chnset[rm]].setStyle({backgroundColor: clr[updown]});
+}
+
+function input(current_channel, updown){
+  var li = $("in").getElementsByTagName('LI'); var clr = ['#ced', '#b9ff61']; 
+  if (current_channel) li[current_channel].setStyle({backgroundColor: clr[updown]});
+}
+
+function tmpr(){
+  this[arr].each(function(i){
+  _log(i.x,i.y,i.z); //pitch wheel message
+  exe(message,i.x,i.y,i.z);
+  });
+}
+
+corr = [
+[{x : 224,y : 0,z : 64},{x : 225,y : 99,z : 56},{x : 226,y : 120,z : 61},{x : 227,y : 91,z : 54},{x : 228,y : 111,z : 59},{x : 229,y : 4,z : 65},
+{x : 230,y : 103,z : 57},{x : 231,y : 124,z : 62},{x : 232,y : 95,z : 55},{x : 234,y : 116,z : 60},{x : 235,y : 87,z : 53},{x : 236,y : 107,z : 58}],
+
+[{x : 224,y : 0,z : 64},{x : 225,y : 21,z : 69},{x : 226,y : 120,z : 61},{x : 227,y : 12,z : 67},{x : 228,y : 111,z : 59},{x : 229,y : 4,z : 65},
+{x : 230,y : 25,z : 70},{x : 231,y : 124,z : 62},{x : 232,y : 17,z : 68},{x : 234,y : 116,z : 60},{x : 235,y : 37,z : 73},{x : 236,y : 107,z : 58}],
+
+[{x : 224,y : 0,z : 64},{x : 225,y : 94,z : 55},{x : 226,y : 27,z : 65},{x : 227,y : 121,z : 54},{x : 228,y : 22,z : 59},{x : 229,y : 51,z : 63},
+{x : 230,y : 48,z : 60},{x : 231,y : 77,z : 64},{x : 232,y : 43,z : 54},{x : 234,y : 72,z : 56},{x : 235,y : 70,z : 55},{x : 236,y : 99,z : 59}],
+
+[{x : 224,y : 0,z : 64},{x : 225,y : 29,z : 68},{x : 226,y : 27,z : 65},{x : 227,y : 56,z : 69},{x : 228,y : 22,z : 59},{x : 229,y : 51,z : 63},
+{x : 230,y : 80,z : 67},{x : 231,y : 77,z : 64},{x : 232,y : 106,z : 68},{x : 234,y : 72,z : 56},{x : 235,y : 5,z : 70},{x : 236,y : 99,z : 59}],
+
+[{x : 224,y : 0,z : 64},{x : 225,y : 0,z : 64},{x : 226,y : 0,z : 64},{x : 227,y : 0,z : 64},{x : 228,y : 0,z : 64},{x : 229,y : 0,z : 64},
+{x : 230,y : 0,z : 64},{x : 231,y : 0,z : 64},{x : 232,y : 0,z : 64},{x : 234,y : 0,z : 64},{x : 235,y : 0,z : 64},{x : 236,y : 0,z : 64}]
+];
+
+arr = 4; 
+$$('input[type="radio"]').invoke('observe', 'change', function(){
+  arr = $$('input:checked[type="radio"][name="temperament"]').pluck("value");
+  ptwh(arr);
+});
+
+function ptwh(arr){ 
+  setTimeout(tmpr.bind(corr), 0);
+}
+
+function midi(data){
+  a = data.a; b = data.b; c = data.c;
+  var cmd=Math.floor(a/16);
+
+  if(cmd==9){ 
+  current_channel = a%16;
+  var key = b;
+  var k=document.getElementById(key);
+  k.className="on";
+  var rm = key%12; 
+    if(current_channel == 9){Jazz.MidiOut(a,b,c);}
+    else{
+    channels(rm, key, 1); output(rm, key, 1);
+    input(current_channel, 1)
+    }
+  }
+  
+  if(cmd==8){
+  var key = b;
+  var k=document.getElementById(key);
+  k.className="";
+  var rm = key%12; 
+  channels(rm, key, 0); output(rm, key, 0);
+  input(current_channel, 0)
+  }
+  
+  if(cmd==15){
+    if(a==252){ console.log("0x" + a.toColorPart()); Reset();}
+  } 
+}
+
+function MyCtor( bindTo ){
+  Object.defineProperty(this, 'value', {
+  get : function (){
+    return bindTo.value;
+  },
+  set : function (val){
+    bindTo.value = val;
+  }
+});
+}
+
+var update, entry; rcd = [];
+function updateTime(){ changeSnd(); 
+  t = Jazz.Time(); note = (t%128);
+  period = $F("period");
+  $('time').update(t); 
+  entry = new MyCtor($('foo')), i = 0;
+  if(entry) {entry.value += note + ";"; rcd[p].push(note);};
+  data = {a: 0x90, b: note, c: 127}; send();
+  function send(){
+  if (trans==0) App.time(data)
+  //sending to server      
+  if (trans==1) App.socket.emit('time', data)}
+  setTimeout(function(){ data = {a: 0x80, b: note, c: 0}; send();},period); 
+  update = setTimeout("updateTime()",period);
+}
+
+Event.observe($('play'), 'click', Play, false);
+p = -1; var Timeout;
+
+function Play(){
+  if(playing==1){
+  playing=0;
+  $('play').update('Play');
+  clearTimeout(update); Jazz.MidiOut(0xb0,120,0);
+  function replay(){ var loop = rcd[p];
+	 if((count += 1) == loop.length) count = 0;	
+	 var n = loop[count]; if(n) {cntl_bg(n); $('note').innerHTML = n;
+    data = {a: 0x90, b: n, c: 127}; send();
+	 setTimeout(function(){ data = {a: 0x80, b: n, c: 0}; send();},period);
+	 data = n;}
+  function send(){
+  if (trans==0) App.time(data)
+  //sending to server      
+  if (trans==1) App.socket.emit('time', data)}
+  Timeout = setTimeout(replay,period);
+    } 
+  _log(rcd);
+   var count = -1;
+  replay();    	
+  } else {
+  playing=1;
+  $('play').update('Stop'); if(entry) {entry.value="";} 
+  p ++;
+  clearTimeout(Timeout);Jazz.MidiOut(0xb0,120,0); rcd.push([]); updateTime();
+  }
+}
+
+Event.observe($('play'), 'dblclick', Stop, false);
+
+function Stop(){
+  clearTimeout(Timeout); $('play').update('Play'); clearTimeout(update); entry.value=""; setTimeout("Reset()",period);
+}
+
+function Flow(){
+  if(trans==1){
+  trans=0; $('flow').update('Transmit');
+  } else { 
+  trans=1; $('flow').update('Local');
+  }
+}
+
+function volume(vol){
+  var range = $R(0, 15);
+  range.each(function(i){
+	 Jazz.MidiOut(0xb0 + i, 7, vol);
+  });
+}
+
+function Pan(pan){
+  var range = $R(0, 15);
+  range.each(function(i){
+  Jazz.MidiOut(0xb0 + i, 10, pan);
+  });
+}
+
+function Mod(mod){
+  var range = $R(0, 15);
+  range.each(function(i){
+  Jazz.MidiOut(0xb0 + i, 1, mod);
+  });
+}
+ 
+function exe(some,x,y,z){
+  some(x,y,z);
+}
+
+function execute(someFunction, value){
+  someFunction(value);
+}
+
+opacity = 0;
+new Control.Slider('opacity','track1',{
+  sliderValue:0,
+  onSlide:function(opacity){ $('debug1').update(opacity); changeSyn();},
+  onChange:function(opacity){ $('debug1').update(opacity); changeSyn();}
+});
+
+vol = 127; pan = 64; mod = 0;
+Values = $R(0, 127);
+new Control.Slider(['modulation','pan','volume'],'track2',{
+  values: Values,range:$R(0,127),
+  sliderValue: [0, 64, 127],
+  onSlide:function(v){vol = v[2]; execute(volume, vol); pan = v[1]; execute(Pan, pan); mod = v[0]; execute(Mod, mod);},
+  onChange:function(v){ $('debug2').update(v.inspect());vol = v[2]; execute(volume, vol); pan = v[1]; execute(Pan, pan); mod = v[0]; execute(Mod, mod);}
+}); 
+
+Scales.each(function(i){
+  var opt = new Element('option').update(i);
+  $('_scales').insert(opt);
+});
+
+Event.observe($('_scales'), 'change', ShowValue, false);
+
+function ShowValue(){
+  current_scale = $('_scales').selectedIndex;
+}
+      
+keyAllowed = {}; 
+document.onkeydown = function(e){ $('_scales').blur();
+  if (keyAllowed [e.which] === false) return;
+  keyAllowed [e.which] = false;
+  var e=window.event || e;
+  if (e.keyCode == 38) {tonic++ ;
+  Object.keys(steps[current_scale]).map(function(value, index) {
+    steps[current_scale][value] ++ ;
+    })
+  }; 
+  if (e.keyCode == 40) {tonic-- ;
+  Object.keys(steps[current_scale]).map(function(value, index) {
+    steps[current_scale][value] -- ;
+    })
+  };
+  var key = steps[current_scale][e.keyCode];
+  if(key){
+  var k=document.getElementById(key); k.className="on";
+  var rm = key%12; 
+  channels(rm, key, 1); output(rm, key, 1);
+  var n = key; cntl_bg(key); 
+  $('note').update(key);
+  }
+}
+document.onkeyup = function(e){ keyAllowed [e.which] = true;
+  var e=window.event || e;
+  var key = steps[current_scale][e.keyCode];
+  if(key){
+  var k=document.getElementById(key); k.className=""; $('note').update();
+  var rm = key%12;
+  channels(rm, key, 0); output(rm, key, 0);
+  }
+}
+
+var Key;
+document.onmousedown = function(e){
+  var e=window.event || e;
+  var k;
+  if (e.target) k = e.target;
+  else if (e.srcElement) k = e.srcElement;
+  var m=parseInt(k.id); var rm = m%12;
+  if(k.id==m)
+  { document.onmouseup(e); channels(rm, m, 1); output(rm, m, 1);
+  k.className="on"; Key=k;
+  cntl_bg(m); notate(m);
+  }
+  return true;
+}
+document.onmouseup = function(e){
+  if(Key)
+  { var m=parseInt(Key.id); var rm = m%12;
+  { channels(rm, m, 0); output(rm, m, 0);
+  Key.className=""; Key=""; $('note').update();
+  }
+  }
+}
+
+sn.each(function(i){
+  var opt = new Element('option').update(i);
+  selSyn.insert(opt);
+});
+
+Event.observe(selSyn, 'change', changeSyn, false);
+
+function changeSyn(){ 
+  colorMap = MusicTheory.Synesthesia.map();document.body.setStyle({background: colorMap[12].hsl});
+}
+
+gmidi.each(function(i){
+  var opt = new Element('option').update(i);
+  selSnd.insert(opt);
+});
+
+Event.observe($('midiIn'), 'change', changeIn, false);
+
+function changeIn(){
+  try{
+  if(selIn.selectedIndex > 0){
+  current_in=Jazz.MidiInOpen(selIn[selIn.selectedIndex].value,midiProc);
+  } else {
+  Jazz.MidiInClose(); current_in=''; Reset();
+  var range = $R(0, 15);
+  range.each(function(i){
+  Jazz.MidiOut(0xb0 + i,120,0);
+  });
+  selIn.blur();
+  }
+  for(var i=0;i<selIn.length;i++){
+  if(selIn[i].value==current_in) selIn[i].selected=1;
+  }
+  }
+  catch(err){}
+}
+
+Event.observe($('midiOut'), 'change', changeOut, false);
+
+function changeOut(){
+  try{
+  current_out=Jazz.MidiOutOpen(selOut.selectedIndex); changeSnd(); console.log(current_out);
+  for(var i=0;i<selOut.length;i++){
+  if(selOut[i].value==current_out) selOut[i].selected=1;}
+  selOut.blur();
+  }
+ catch(err){}
+}
+
+Event.observe($('midiSnd'), 'change', changeSnd, false);
+ 
+function changeSnd(){
+  current_snd=selSnd.selectedIndex;
+  var range = $R(0, 15);
+  range.each(function(i){
+    Jazz.MidiOut(192 + i,current_snd,0);
+  });
+  selSnd.blur();
+}
+
+function handleChange(cb){
+  [0,1,2,3,4,5,6,7,8,10,11,12].each(function(i) {
+    if(cb.checked == true){
+    Jazz.MidiOut(0xb0 + i,64, 64 );
+    }else{
+    Jazz.MidiOut(0xb0 + i,64,0);
+    }
+  }); 
+}
+
+Event.observe($('panic'), 'click', Reset, false);
+
+function Reset(){
+  $('note').update(); $('sustain').checked = false; var k=$$('.on');
+  k.each(function(i) {
+    i.removeClassName('on');
+  });
+  var range = $R(0, 15); var l_i = $("in").getElementsByTagName('LI'); var l_o = $("out").getElementsByTagName('LI');
+  range.each(function(i){
+    Jazz.MidiOut(0xb0 + i,123, 0); Jazz.MidiOut(0xb0 + i,121, 0); l_i[i].setStyle({backgroundColor: '#ced'}); l_o[i].setStyle({backgroundColor: '#cde'});
+  });
+}
+
+try{
+  current_out=Jazz.MidiOutOpen(0);
+  var list=Jazz.MidiOutList();
+  for( var i = 0; i < list.length; i++) {
+  selOut[selOut.length]=new Option(list[i],list[i],list[i]==current_out,list[i]==current_out);}
+  current_in=Jazz.MidiInOpen(0,midiProc);
+  var list=Jazz.MidiInList();
+  for( var i = 0; i < list.length; i++){
+  selIn[selIn.length]=new Option(list[i],list[i],list[i]==current_in,list[i]==current_in);}
+}
+catch(err){}
+
+</script>

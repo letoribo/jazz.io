@@ -1,0 +1,31 @@
+{
+  "name": "jazz.io",
+  "dependencies": {
+    "express": "~3.4.0",
+    "socket.io": "~0.9.16",
+    "async": "0.1.22",
+    "underscore": "1.4.3",
+    "coffee-script": "1.4.0",
+    "teoria": "^0.5.0"
+  },
+  "devDependencies": {
+    "request": "*",
+    "mocha": "*",
+    "chai": "*",
+    "socket.io-client": "*",
+    "jade": "*"
+  },
+  "main": "switch.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha test/test.coffee",
+    "compile": "./node_modules/coffee-script/bin/coffee -o compiled/ -c lib/",
+    "prepublish": "echo $(pwd) > /tmp/.pwd; ./node_modules/coffee-script/bin/coffee -o compiled/ -c lib/;",
+    "postpublish": "rm -rf $(cat /tmp/.pwd)/compiled",
+    "start": "node app.js"
+  },
+  "subdomain": "letoribo-jazz.io",
+  "version": "0.0.0-1",
+  "engines": {
+    "node": "0.10.x"
+  }
+}
