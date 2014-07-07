@@ -18,12 +18,10 @@
 <ul id="in">
 <li>I</li><li>II</li><li>III</li><li>IV</li><li>V</li><li>VI</li><li>VII</li><li>VIII</li><li>IX</li><li>X</li><li>XI</li><li>XII</li><li>XIII</li><li>XIV</li><li>XV</li><li>XVI</li>
 </ul>
- <object id="Jazz1" classid="CLSID:1ACE1618-1C7D-4561-AEE1-34842AA85E90" class="hidden">
-  <object id="Jazz2" type="audio/x-jazz" class="hidden">
+<object id="Jazz" type="audio/x-jazz" class="hidden">
 <p>This <br>page<br>requires <br>
-  <a href="http://jazz-soft.net">Jazz-Plugin</a><br> <img src="./images/ear.png" > &nbsp!!! Restart <br>the browser <br>
-<img src="./images/chrome.ico" ><br>after installing </p>
-  </object>
+<a href="http://jazz-soft.net">Jazz-Plugin</a><br><img src="./images/ear.png" > &nbsp!!! Restart<br>the browser<br>
+<img src="./images/chrome.ico" ><br>after installing</p>
 </object></i>
 </div>
 <div class="c2" id="c2"><input id="foo"/>
@@ -40,15 +38,16 @@
 </div>
 
 <div id="track1">
-    <div id="opacity" title="opacity"></div>
-    <p id="debug1" hidden> </p>
+<div id="opacity" title="opacity"></div>
+<p id="debug1" hidden></p>
 </div><br>
 <div id="track2">
-    <div id="modulation" title="modulation"> </div>
-    <div id="pan" title="pan"> </div>
-    <div id="volume" title="volume"> </div>
-  </div>
-  <p id="debug2"> </p>
+<div id="modulation" title="modulation"></div>
+<div id="pan" title="pan"></div>
+<div id="volume" title="volume"></div>
+</div>
+<p id="debug2"></p>
+  
 <p>
 <b>MIDI In: </b><select id="midiIn"><option value="">Not connected</option></select>
 <b>MIDI Out: </b><select id="midiOut"></select><b> Flow: </b><button id="flow" onclick='Flow(); '>Transmit</button>
@@ -69,8 +68,8 @@ id=74></span><span id=76></span><span id=77></span><span id=79></span><span id=8
 </div>
 <b>Scale: </b><select id="_scales"></select>
 <div id=room></div>
-
 </div>
+
 <div class="c3">
 <p>List of output</p><code>MIDI channels</code>
 <ul id="out">
@@ -87,8 +86,7 @@ App.socket = io.connect()
 jQuery.noConflict();
 DEBUGMODE = true;
 
-Jazz = document.getElementById("Jazz1"); if(!Jazz || !Jazz.isJazz) Jazz = document.getElementById("Jazz2");
-//t=Jazz.Time();
+Jazz = document.getElementById("Jazz");
 playing=0; trans=0;
 var note, current_channel, current_in, current_out, current_snd;
 tonic = 0; current_scale = 0; steps = keys;
@@ -211,10 +209,9 @@ corr = [
 {x : 230,y : 0,z : 64},{x : 231,y : 0,z : 64},{x : 232,y : 0,z : 64},{x : 234,y : 0,z : 64},{x : 235,y : 0,z : 64},{x : 236,y : 0,z : 64}]
 ];
 
-arr = 4; 
 $$('input[type="radio"]').invoke('observe', 'change', function(){
   arr = $$('input:checked[type="radio"][name="temperament"]').pluck("value");
-  ptwh(arr);
+ tmpr.bind(corr)();
 });
 
 function ptwh(arr){ 
@@ -334,14 +331,14 @@ function volume(vol){
 function Pan(pan){
   var range = $R(0, 15);
   range.each(function(i){
-  Jazz.MidiOut(0xb0 + i, 10, pan);
+    Jazz.MidiOut(0xb0 + i, 10, pan);
   });
 }
 
 function Mod(mod){
   var range = $R(0, 15);
   range.each(function(i){
-  Jazz.MidiOut(0xb0 + i, 1, mod);
+    Jazz.MidiOut(0xb0 + i, 1, mod);
   });
 }
  
@@ -356,8 +353,8 @@ function execute(someFunction, value){
 opacity = 0;
 new Control.Slider('opacity','track1',{
   sliderValue:0,
-  onSlide:function(opacity){ $('debug1').update(opacity); changeSyn();},
-  onChange:function(opacity){ $('debug1').update(opacity); changeSyn();}
+  onSlide:function(opacity){$('debug1').update(opacity); changeSyn();},
+  onChange:function(opacity){$('debug1').update(opacity); changeSyn();}
 });
 
 vol = 127; pan = 64; mod = 0;
@@ -422,7 +419,7 @@ document.onmousedown = function(e){
   else if (e.srcElement) k = e.srcElement;
   var m=parseInt(k.id); var rm = m%12;
   if(k.id==m)
-  { document.onmouseup(e); channels(rm, m, 1); output(rm, m, 1);
+  {document.onmouseup(e); channels(rm, m, 1); output(rm, m, 1);
   k.className="on"; Key=k;
   cntl_bg(m); notate(m);
   }
@@ -480,7 +477,8 @@ function changeOut(){
   try{
   current_out=Jazz.MidiOutOpen(selOut.selectedIndex); changeSnd(); console.log(current_out);
   for(var i=0;i<selOut.length;i++){
-  if(selOut[i].value==current_out) selOut[i].selected=1;}
+  if(selOut[i].value==current_out) selOut[i].selected=1;
+  }
   selOut.blur();
   }
  catch(err){}
@@ -498,7 +496,7 @@ function changeSnd(){
 }
 
 function handleChange(cb){
-  [0,1,2,3,4,5,6,7,8,10,11,12].each(function(i) {
+  [0,1,2,3,4,5,6,7,8,10,11,12].each(function(i){
     if(cb.checked == true){
     Jazz.MidiOut(0xb0 + i,64, 64 );
     }else{
@@ -511,7 +509,7 @@ Event.observe($('panic'), 'click', Reset, false);
 
 function Reset(){
   $('note').update(); $('sustain').checked = false; var k=$$('.on');
-  k.each(function(i) {
+  k.each(function(i){
     i.removeClassName('on');
   });
   var range = $R(0, 15); var l_i = $("in").getElementsByTagName('LI'); var l_o = $("out").getElementsByTagName('LI');
@@ -523,7 +521,7 @@ function Reset(){
 try{
   current_out=Jazz.MidiOutOpen(0);
   var list=Jazz.MidiOutList();
-  for( var i = 0; i < list.length; i++) {
+  for( var i = 0; i < list.length; i++){
   selOut[selOut.length]=new Option(list[i],list[i],list[i]==current_out,list[i]==current_out);}
   current_in=Jazz.MidiInOpen(0,midiProc);
   var list=Jazz.MidiInList();
