@@ -120,11 +120,7 @@ App.socket.on('time', App.time);
 
 App.time = function(data){
   var a = data.a; var b = data.b; var c = data.c;
-  exe(message,a,b,c);
-  var k=document.getElementById(b); var Class = {0:"",127:"on"};
-  k.className = Class[c];
-  // control the background
-  cntl_bg(b); notate(b);
+  exe(message,a,b,c); bgrnd(b,c)
 }
 
 colorMap = [];
@@ -140,11 +136,15 @@ function notate(n){
 
 App.socket.on('notes', function(data){
   var a = data.notes.a; var b = data.notes.b; var c = data.notes.c;
-  exe(message,a,b,c);
+  exe(message,a,b,c); bgrnd(b,c);
+}) 
+
+function bgrnd(b,c){ 
   var k=document.getElementById(b); var Class = {0:"",127:"on"};
   k.className = Class[c];
+  // control the background
   cntl_bg(b); notate(b);
-}) 
+}
 
 // Callback function
 function midiProc(t,a,b,c){ 
@@ -213,10 +213,6 @@ $$('input[type="radio"]').invoke('observe', 'change', function(){
   arr = $$('input:checked[type="radio"][name="temperament"]').pluck("value");
  tmpr.bind(corr)();
 });
-
-function ptwh(arr){ 
-  setTimeout(tmpr.bind(corr), 0);
-}
 
 function midi(data){
   a = data.a; b = data.b; c = data.c;
