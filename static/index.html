@@ -50,7 +50,7 @@
   
 <p>
 <b>MIDI In: </b><select id="midiIn"><option value="">Not connected</option></select>
-<b>MIDI Out: </b><select id="midiOut"></select><b> Flow: </b><button id="flow" onclick='Flow(); '>Transmit</button>
+<b>MIDI Out: </b><select id="midiOut"></select><b> Flow: </b><button id="flow">Transmit</button>
  </p>
 <p><b>Sound: </b><select id="midiSnd"></select>
 <b>Synesthesia: </b><select id="Syn"></select>
@@ -86,8 +86,7 @@ App.socket = io.connect()
 jQuery.noConflict();
 DEBUGMODE = true;
 
-Jazz = document.getElementById("Jazz");
-playing=0; trans=0;
+Jazz = $("Jazz"); Jazz.playing=true; Jazz.trans=true;
 var note, current_channel, current_in, current_out, current_snd;
 tonic = 0; current_scale = 0; steps = keys;
 selSyn=$("Syn"); selIn=$("midiIn"); selOut=$("midiOut"); selSnd=$("midiSnd");
@@ -265,9 +264,9 @@ function updateTime(){ changeSnd();
   if(entry) {entry.value += note + ";"; rcd[p].push(note);};
   data = {a: 0x90, b: note, c: 127}; send();
   function send(){
-  if (trans==0) App.time(data)
+  if (Jazz.trans) App.time(data)
   //sending to server      
-  if (trans==1) App.socket.emit('time', data)}
+  else App.socket.emit('time', data)}
   setTimeout(function(){ data = {a: 0x80, b: note, c: 0}; send();},period); 
   update = setTimeout("updateTime()",period);
 }
@@ -275,9 +274,9 @@ function updateTime(){ changeSnd();
 Event.observe($('play'), 'click', Play, false);
 p = -1; var Timeout;
 
-function Play(){
-  if(playing==1){
-  playing=0;
+function Play(){   
+  Jazz.playing = Jazz.playing === false ? true: false; 
+  if(Jazz.playing){
   $('play').update('Play');
   clearTimeout(update); Jazz.MidiOut(0xb0,120,0);
   function replay(){ var loop = rcd[p];
@@ -287,16 +286,15 @@ function Play(){
 	 setTimeout(function(){ data = {a: 0x80, b: n, c: 0}; send();},period);
 	 data = n;}
   function send(){
-  if (trans==0) App.time(data)
+  if (Jazz.trans) App.time(data);
   //sending to server      
-  if (trans==1) App.socket.emit('time', data)}
+  else App.socket.emit('time', data)}
   Timeout = setTimeout(replay,period);
     } 
   _log(rcd);
    var count = -1;
   replay();    	
   } else {
-  playing=1;
   $('play').update('Stop'); if(entry) {entry.value="";} 
   p ++;
   clearTimeout(Timeout);Jazz.MidiOut(0xb0,120,0); rcd.push([]); updateTime();
@@ -309,11 +307,14 @@ function Stop(){
   clearTimeout(Timeout); $('play').update('Play'); clearTimeout(update); entry.value=""; setTimeout("Reset()",period);
 }
 
+Event.observe($('flow'), 'click', Flow, false);
+
 function Flow(){
-  if(trans==1){
-  trans=0; $('flow').update('Transmit');
+  Jazz.trans = Jazz.trans === false ? true: false; 
+  if(Jazz.trans){
+  $('flow').update('Transmit'); Reset();
   } else { 
-  trans=1; $('flow').update('Local');
+  $('flow').update('Local');
   }
 }
 
