@@ -147,7 +147,7 @@ function bgrnd(b,c){
 
 // Callback function
 function midiProc(t,a,b,c){ 
-data = {a: a, b: b, c: c}
+  data = {a: a, b: b, c: c}
   //client
   if (trans==0) App.midi(data)
   //sending mididata to server      
@@ -210,7 +210,7 @@ corr = [
 
 $$('input[type="radio"]').invoke('observe', 'change', function(){
   arr = $$('input:checked[type="radio"][name="temperament"]').pluck("value");
- tmpr.bind(corr)();
+  tmpr.bind(corr)();
 });
 
 function midi(data){
@@ -218,25 +218,25 @@ function midi(data){
   var cmd=Math.floor(a/16);
 
   if(cmd==9){ 
-  current_channel = a%16;
-  var key = b;
-  var k=document.getElementById(key);
-  k.className="on";
-  var rm = key%12; 
+    current_channel = a%16;
+    var key = b;
+    var k=document.getElementById(key);
+    k.className="on";
+    var rm = key%12; 
     if(current_channel == 9){Jazz.MidiOut(a,b,c);}
     else{
-    channels(rm, key, 1); output(rm, key, 1);
-    input(current_channel, 1)
+      channels(rm, key, 1); output(rm, key, 1);
+      input(current_channel, 1)
     }
   }
   
   if(cmd==8){
-  var key = b;
-  var k=document.getElementById(key);
-  k.className="";
-  var rm = key%12; 
-  channels(rm, key, 0); output(rm, key, 0);
-  input(current_channel, 0)
+    var key = b;
+    var k=document.getElementById(key);
+    k.className="";
+    var rm = key%12; 
+    channels(rm, key, 0); output(rm, key, 0);
+    input(current_channel, 0)
   }
   
   if(cmd==15){
@@ -256,7 +256,8 @@ function MyCtor( bindTo ){
 }
 
 var update, entry; rcd = [];
-function updateTime(){ changeSnd(); 
+function updateTime(){
+  changeSnd(); 
   t = Jazz.Time(); note = (t%128);
   period = $F("period");
   $('time').update(t); 
@@ -264,11 +265,11 @@ function updateTime(){ changeSnd();
   if(entry) {entry.value += note + ";"; rcd[p].push(note);};
   data = {a: 0x90, b: note, c: 127}; send();
   function send(){
-  if (Jazz.trans) App.time(data)
-  //sending to server      
-  else App.socket.emit('time', data)}
+    if (Jazz.trans) App.time(data)
+    //sending to server      
+    else App.socket.emit('time', data)}
   setTimeout(function(){ data = {a: 0x80, b: note, c: 0}; send();},period); 
-  update = setTimeout("updateTime()",period);
+  update = setTimeout(updateTime, period);
 }
 
 Event.observe($('play'), 'click', Play, false);
@@ -277,34 +278,39 @@ p = -1; var Timeout;
 function Play(){   
   Jazz.playing = Jazz.playing === false ? true: false; 
   if(Jazz.playing){
-  $('play').update('Play');
-  clearTimeout(update); Jazz.MidiOut(0xb0,120,0);
-  function replay(){ var loop = rcd[p];
-	 if((count += 1) == loop.length) count = 0;	
-	 var n = loop[count]; if(n) {cntl_bg(n); $('note').innerHTML = n;
-    data = {a: 0x90, b: n, c: 127}; send();
-	 setTimeout(function(){ data = {a: 0x80, b: n, c: 0}; send();},period);
-	 data = n;}
-  function send(){
-  if (Jazz.trans) App.time(data);
-  //sending to server      
-  else App.socket.emit('time', data)}
-  Timeout = setTimeout(replay,period);
+    $('play').update('Play');
+    clearTimeout(update); Jazz.MidiOut(0xb0,120,0);
+    function replay(){
+  	   var loop = rcd[p];
+	   if((count += 1) == loop.length) count = 0;	
+	   var n = loop[count];
+	   if(n){
+	 	  cntl_bg(n); $('note').innerHTML = n;
+        data = {a: 0x90, b: n, c: 127}; send();
+	     setTimeout(function(){data = {a: 0x80, b: n, c: 0}; send();},period);
+	     data = n;
+	   }
+      function send(){
+        if (Jazz.trans) App.time(data);
+        //sending to server      
+        else App.socket.emit('time', data)
+      }
+    Timeout = setTimeout(replay,period);
     } 
-  _log(rcd);
-   var count = -1;
-  replay();    	
+    _log(rcd);
+    var count = -1;
+    replay();    	
   } else {
-  $('play').update('Stop'); if(entry) {entry.value="";} 
-  p ++;
-  clearTimeout(Timeout);Jazz.MidiOut(0xb0,120,0); rcd.push([]); updateTime();
+    $('play').update('Stop'); if(entry) {entry.value="";} 
+    p ++; clearTimeout(Timeout);
+    Jazz.MidiOut(0xb0,120,0); rcd.push([]); updateTime();
   }
 }
 
 Event.observe($('play'), 'dblclick', Stop, false);
 
 function Stop(){
-  clearTimeout(Timeout); $('play').update('Play'); clearTimeout(update); entry.value=""; setTimeout("Reset()",period);
+  clearTimeout(Timeout); $('play').update('Play'); clearTimeout(update); entry.value=""; setTimeout(Reset, period);
 }
 
 Event.observe($('flow'), 'click', Flow, false);
@@ -379,32 +385,34 @@ document.onkeydown = function(e){ $('_scales').blur();
   if (keyAllowed [e.which] === false) return;
   keyAllowed [e.which] = false;
   var e=window.event || e;
-  if (e.keyCode == 38) {tonic++ ;
-  Object.keys(steps[current_scale]).map(function(value, index) {
-    steps[current_scale][value] ++ ;
+  if (e.keyCode == 38){
+  	 tonic++ ;
+    Object.keys(steps[current_scale]).map(function(value, index){
+      steps[current_scale][value] ++ ;
     })
   }; 
-  if (e.keyCode == 40) {tonic-- ;
-  Object.keys(steps[current_scale]).map(function(value, index) {
-    steps[current_scale][value] -- ;
+  if (e.keyCode == 40) {
+  	 tonic-- ;
+    Object.keys(steps[current_scale]).map(function(value, index){
+      steps[current_scale][value] -- ;
     })
   };
   var key = steps[current_scale][e.keyCode];
   if(key){
-  var k=document.getElementById(key); k.className="on";
-  var rm = key%12; 
-  channels(rm, key, 1); output(rm, key, 1);
-  var n = key; cntl_bg(key); 
-  $('note').update(key);
+    var k=document.getElementById(key); k.className="on";
+    var rm = key%12; 
+    channels(rm, key, 1); output(rm, key, 1);
+    var n = key; cntl_bg(key); 
+    $('note').update(key);
   }
 }
 document.onkeyup = function(e){ keyAllowed [e.which] = true;
   var e=window.event || e;
   var key = steps[current_scale][e.keyCode];
   if(key){
-  var k=document.getElementById(key); k.className=""; $('note').update();
-  var rm = key%12;
-  channels(rm, key, 0); output(rm, key, 0);
+    var k=document.getElementById(key); k.className=""; $('note').update();
+    var rm = key%12;
+    channels(rm, key, 0); output(rm, key, 0);
   }
 }
 
@@ -423,11 +431,10 @@ document.onmousedown = function(e){
   return true;
 }
 document.onmouseup = function(e){
-  if(Key)
-  { var m=parseInt(Key.id); var rm = m%12;
-  { channels(rm, m, 0); output(rm, m, 0);
-  Key.className=""; Key=""; $('note').update();
-  }
+  if(Key){ 
+    var m=parseInt(Key.id); var rm = m%12;
+    channels(rm, m, 0); output(rm, m, 0);
+    Key.className=""; Key=""; $('note').update();
   }
 }
 
