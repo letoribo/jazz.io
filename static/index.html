@@ -105,9 +105,6 @@ window.onbeforeunload = function(){
   App.socket.disconnect();
 };
 
-App = {}
-App.socket = io.connect()
-
 // Listen for the announce event.
 App.socket.on('announce', function(data){
   Room = $("room"); 
