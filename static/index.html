@@ -8,39 +8,38 @@
 <script src="./SpaceW3.js" type="text/javascript"></script>
 <script src="./scales.js" type="text/javascript"></script>
 <script src="./logger.js" type="text/javascript"></script>
-<link rel="stylesheet" href="https://google-developers.appspot.com/web/fundamentals/resources/samples/css/normalize.css">
 <link rel="stylesheet" type="text/css" href="./number-polyfill.css" />
 <link rel="stylesheet" type="text/css" href="./layouts-common.css">
 
 <div class="container">
 <div class="c1"><i> 
-<p>List of input</p><code>MIDI channels</code>
+<center><p><u>List of input</u></p><code>MIDI channels</code>
 <ul id="in">
 <li>I</li><li>II</li><li>III</li><li>IV</li><li>V</li><li>VI</li><li>VII</li><li>VIII</li><li>IX</li><li>X</li><li>XI</li><li>XII</li><li>XIII</li><li>XIV</li><li>XV</li><li>XVI</li>
 </ul>
-<object id="Jazz" type="audio/x-jazz" class="hidden">
+<input id="Inp" type="checkbox" onchange="light_out(this);"></center>
+<object id="Jazz1" classid="CLSID:1ACE1618-1C7D-4561-AEE1-34842AA85E90" class="hidden"><object id="Jazz2" type="audio/x-jazz" class="hidden">
 <p>This <br>page<br>requires <br>
-<a href="http://jazz-soft.net">Jazz-Plugin</a><br><img src="./images/ear.png" > &nbsp!!! Restart<br>the browser<br>
+<a href="http://jazz-soft.net">Jazz-Plugin</a><br><img src="./images/ear.png"> &nbsp!!! Restart<br>the browser<br>
 <img src="./images/chrome.ico" ><br>after installing</p>
-</object></i>
+</object></object></i>
 </div>
-<div class="c2" id="c2"><input id="foo"/>
-<div id=here></div><b>Jazz Time</b>
+<div class="c2" id="c2">
+<input id="foo"/>
+<center>
+<b>Jazz Time</b>
 <span id="time"></span>
 <p><b>Note: <span id="note"></span></b></p>
-<div><input type="number" name="numberMin" id="period" min="0" value = 122 />
-<button id="play" >Play</button><b> Sustain: </b><input id="sustain" type="checkbox" onchange=" handleChange(this);" >
-<input type="radio" name="temperament" id="12_edo"   value = 4 checked /><code> 12-edo </code>
-<input type="radio" name="temperament" id="31_edo#"  value = 0 /><i><b> 31-edo # </b></i>
-<input type="radio" name="temperament" id="31_edob"  value = 1 /><i><b> 31-edo b </b></i>
-<input type="radio" name="temperament" id="53_edo#"  value = 2 /><i><b> 53-edo # </b></i>
-<input type="radio" name="temperament" id="53_edob"  value = 3 /><i><b> 53-edo b </b><i/>
+<div><input type="number" id="period" min="0" value = 122 />
+<button class="btn-small" id="play" >Play</button><b> Sustain: </b><input id="sustain" type="checkbox" onchange="handleChange(this);">
+<input type="radio" name="temperament" id="12_edo" value = 4 checked /><code> 12-edo </code><p>
+<input type="radio" name="temperament" id="31_edo#" value = 0 /><i><b> 31-edo # </b></i>
+<input type="radio" name="temperament" id="31_edob" value = 1 /><i><b> 31-edo b </b></i>
+<input type="radio" name="temperament" id="53_edo#" value = 2 /><i><b> 53-edo # </b></i>
+<input type="radio" name="temperament" id="53_edob" value = 3 /><i><b> 53-edo b </b><i/></p>
 </div>
 
-<div id="track1">
-<div id="opacity" title="opacity"></div>
-<p id="debug1" hidden></p>
-</div><br>
+
 <div id="track2">
 <div id="modulation" title="modulation"></div>
 <div id="pan" title="pan"></div>
@@ -50,12 +49,16 @@
   
 <p>
 <b>MIDI In: </b><select id="midiIn"><option value="">Not connected</option></select>
-<b>MIDI Out: </b><select id="midiOut"></select><b> Flow: </b><button id="flow">Transmit</button>
+<b>MIDI Out: </b><select id="midiOut"></select><b> Flow: </b><button class="btn-small" id="flow">Transmit</button>
  </p>
 <p><b>Sound: </b><select id="midiSnd"></select>
 <b>Synesthesia: </b><select id="Syn"></select>
-<button id="panic" >Panic</button></p>
-
+<button class="btn-small" id="panic">Panic</button></p>
+</center><div class="center">
+<div id="track1">
+<div id="opacity" title="opacity"></div>
+<p id="debug1" hidden></p>
+</div><br>
 <div id=piano>
 <div class=ebony>
 <span id=1></span><span id=3></span><span class=break></span><span id=6></span><span id=8></span><span id=10></span><span class=break></span><span id=13></span><span id=15></span><span class=break></span><span id=18></span><span id=20></span><span id=22></span><span class=break></span><span id=25></span><span id=27></span><span class=break></span><span id=30></span><span id=32></span><span id=34></span><span class=break></span><span id=37></span><span id=39></span><span class=break></span><span id=42></span><span id=44></span><span id=46></span><span class=break></span><span id=49></span><span id=51></span><span class=break></span><span id=54></span><span id=56></span><span id=58></span><span class=break></span><span id=61></span><span id=63></span><span class=break></span><span id=66></span><span
@@ -66,15 +69,17 @@ id=68></span><span id=70></span><span class=break></span><span id=73></span><spa
 id=74></span><span id=76></span><span id=77></span><span id=79></span><span id=81></span><span id=83></span><span id=84></span><span id=86></span><span id=88></span><span id=89></span><span id=91></span><span id=93></span><span id=95></span><span id=96></span><span id=98></span><span id=100></span><span id=101></span><span id=103></span><span id=105></span><span id=107></span><span id=108></span><span id=110></span><span id=112></span><span id=113></span><span id=115></span><span id=117></span><span id=119></span><span id=120></span><span id=122></span><span id=124></span><span id=125></span><span id=127></span>
 </div>
 </div>
-<b>Scale: </b><select id="_scales"></select>
-<div id=room></div>
 </div>
-
+<center>
+<b>Scale: </b><select id="_scales"></select>
+</center>
+</div>
 <div class="c3">
-<p>List of output</p><code>MIDI channels</code>
+<center><p><u>List output</u></p><code>MIDI channels</code>
 <ul id="out">
 <li>I</li><li>II</li><li>III</li><li>IV</li><li>V</li><li>VI</li><li>VII</li><li>VIII</li><li>IX</li><li>X</li><li>XI</li><li>XII</li><li>XIII</li><li>XIV</li><li>XV</li><li>XVI</li>
-</ul>
+</ul><input id="Out" type="checkbox" onchange="light_out(this);">
+</center>
 </div>
 </div>
 
@@ -86,10 +91,11 @@ App.socket = io.connect()
 jQuery.noConflict();
 DEBUGMODE = true;
 
-Jazz = $("Jazz"); Jazz.playing=true; Jazz.trans=true;
-var note, current_channel, current_in, current_out, current_snd;
+Jazz = document.getElementById("Jazz1"); if(!Jazz || !Jazz.isJazz) Jazz = document.getElementById("Jazz2"); 
+Jazz.playing = true;
+var note, curr, current_in, current_out, current_snd, trans = true;
 tonic = 0; current_scale = 0; steps = keys;
-selSyn=$("Syn"); selIn=$("midiIn"); selOut=$("midiOut"); selSnd=$("midiSnd");
+selSyn = $("Syn"); selIn = $("midiIn"); selOut = $("midiOut"); selSnd = $("midiSnd");
 
 Event.observe(window, 'load', Prompt, false);
 
@@ -98,7 +104,7 @@ function Prompt(){
   $("midiSnd").selectedIndex=110; changeSnd();
   var room = prompt('type a room name, "jazz"', "jazz")
   // Emit ready event with room name.
-  App.socket.emit('ready', room)   
+  App.socket.emit('ready', room);   
 }
 
 window.onbeforeunload = function(){
@@ -116,12 +122,12 @@ App.socket.on('time', App.time);
 
 App.time = function(data){
   var a = data.a; var b = data.b; var c = data.c;
-  exe(message,a,b,c); bgrnd(b,c)
+  exe(message, a, b, c); bgrnd(b, c);
 }
 
 colorMap = [];
  
-function cntl_bg(n){ map = colorMap[n] ;
+function cntl_bg(n){map = colorMap[n];
   if (typeof map !== 'undefined') 
   var c2 = $('c2'); if (map) c2.setStyle({backgroundColor: map.hsl});	
 }
@@ -132,23 +138,23 @@ function notate(n){
 
 App.socket.on('notes', function(data){
   var a = data.notes.a; var b = data.notes.b; var c = data.notes.c;
-  exe(message,a,b,c); bgrnd(b,c);
+  exe(message, a, b, c); bgrnd(b, c);
 }) 
 
 function bgrnd(b,c){ 
-  var k=document.getElementById(b); var Class = {0:"",127:"on"};
+  var k=document.getElementById(b); var Class = {0 : "", 127 : "on"};
   k.className = Class[c];
   // control the background
   cntl_bg(b); notate(b);
 }
 
 // Callback function
-function midiProc(t,a,b,c){ 
+function midiProc(t, a, b, c){ 
   data = {a: a, b: b, c: c}
   //client
-  if (trans==0) App.midi(data)
+  if (trans == 0) App.midi(data)
   //sending mididata to server      
-  if (trans==1) App.socket.emit('mididata', data) 
+  if (trans == 1) App.socket.emit('mididata', data); 
 }
 
 App.socket.on('midi', App.midi)
@@ -160,31 +166,31 @@ App.socket.on('midi', function(data){
   if (data) midi(data);
 }) 
 
-function message(x,y,z){
-  Jazz.MidiOut(x,y,z);
+function message(x, y, z){
+  Jazz.MidiOut(x, y, z);
 }
 
 function channels(rm, key, updown){
-  var vlm = [0,vol];
-  var chnn = [[0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,0x88,0x8a,0x8b,0x8c],[0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,0x98,0x9a,0x9b,0x9c]];
-  exe(message,chnn[updown][rm],key,vlm[updown]);    
+  var vlm = [0, vol];
+  var chnn = [[0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,0x88,0x8a,0x8b,0x8c], [0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,0x98,0x9a,0x9b,0x9c]];
+  exe(message, chnn[updown][rm], key, vlm[updown]);    
 }
 
 function output(rm, key, updown){
-  var li = $("out").getElementsByTagName('LI'); var clr = ['#cde', '#b9ff61']; 
+  var li = $("out").getElementsByTagName('LI'); var clr = ['#DDEAF8', '#b9ff61']; 
   var chnset = {0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:10,10:11,11:12,12:13,13:14,14:15,15:16}
   li[chnset[rm]].setStyle({backgroundColor: clr[updown]});
 }
 
-function input(current_channel, updown){
-  var li = $("in").getElementsByTagName('LI'); var clr = ['#ced', '#b9ff61']; 
-  if (current_channel) li[current_channel].setStyle({backgroundColor: clr[updown]});
+function input(curr, updown){
+  var li = $("in").getElementsByTagName('LI'); var clr = ['#CAE1D7', '#b9ff61']; 
+  if (curr) li[curr].setStyle({backgroundColor: clr[updown]});
 }
 
 function tmpr(){
   this[arr].each(function(i){
-  _log(i.x,i.y,i.z); //pitch wheel message
-  exe(message,i.x,i.y,i.z);
+  _log(i.x, i.y, i.z); //pitch wheel message
+  exe(message, i.x, i.y, i.z);
   });
 }
 
@@ -212,36 +218,37 @@ $$('input[type="radio"]').invoke('observe', 'change', function(){
 
 function midi(data){
   a = data.a; b = data.b; c = data.c;
-  var cmd=Math.floor(a/16);
+  var cmd = Math.floor(a / 16);
 
-  if(cmd==9){ 
-    current_channel = a%16;
+  if(cmd == 9){ 
+    curr = a % 16;
     var key = b;
     var k=document.getElementById(key);
-    k.className="on";
-    var rm = key%12; 
-    if(current_channel == 9){Jazz.MidiOut(a,b,c);}
+    k.className = "on";
+    var rm = key % 12; 
+    if(curr == 9){Jazz.MidiOut(a, b, c);}
     else{
-      channels(rm, key, 1); output(rm, key, 1);
-      input(current_channel, 1)
+      channels(rm, key, 1); if ($('Out').checked == true) {output(rm, key, 1);}  
+      if ($('Inp').checked == true) {input(curr, 1);}
     }
   }
   
-  if(cmd==8){
+  if(cmd == 8){
+    curr = a % 16;
     var key = b;
-    var k=document.getElementById(key);
-    k.className="";
-    var rm = key%12; 
-    channels(rm, key, 0); output(rm, key, 0);
-    input(current_channel, 0)
+    var k = document.getElementById(key);
+    k.className = "";
+    var rm = key % 12; 
+    channels(rm, key, 0); if ($('Out').checked == true) {output(rm, key, 0);}
+    if ($('Inp').checked == true) {input(curr, 0);}
   }
   
-  if(cmd==15){
-    if(a==252){ console.log("0x" + a.toColorPart()); Reset();}
+  if(cmd == 15){
+    if(a == 252){console.log("0x" + a.toColorPart()); Reset();}
   } 
-}
+};
 
-function MyCtor( bindTo ){
+function MyCtor(bindTo){
   Object.defineProperty(this, 'value', {
   get : function (){
     return bindTo.value;
@@ -250,24 +257,24 @@ function MyCtor( bindTo ){
     bindTo.value = val;
   }
 });
-}
+};
 
 var update, entry; rcd = [];
 function updateTime(){
   changeSnd(); 
-  t = Jazz.Time(); note = (t%128);
+  t = Jazz.Time(); note = (t % 128);
   period = $F("period");
   $('time').update(t); 
   entry = new MyCtor($('foo')), i = 0;
   if(entry) {entry.value += note + ";"; rcd[p].push(note);};
   data = {a: 0x90, b: note, c: 127}; send();
   function send(){
-    if (Jazz.trans) App.time(data)
+    if (trans) App.time(data)
     //sending to server      
     else App.socket.emit('time', data)}
   setTimeout(function(){ data = {a: 0x80, b: note, c: 0}; send();},period); 
   update = setTimeout(updateTime, period);
-}
+};
 
 Event.observe($('play'), 'click', Play, false);
 p = -1; var Timeout;
@@ -276,7 +283,7 @@ function Play(){
   Jazz.playing = Jazz.playing === false ? true: false; 
   if(Jazz.playing){
     $('play').update('Play');
-    clearTimeout(update); Jazz.MidiOut(0xb0,120,0);
+    clearTimeout(update); Jazz.MidiOut(0xb0, 120, 0);
     function replay(){
   	   var loop = rcd[p];
 	   if((count += 1) == loop.length) count = 0;	
@@ -288,7 +295,7 @@ function Play(){
 	     data = n;
 	   }
       function send(){
-        if (Jazz.trans) App.time(data);
+        if (trans) App.time(data);
         //sending to server      
         else App.socket.emit('time', data)
       }
@@ -298,72 +305,72 @@ function Play(){
     var count = -1;
     replay();    	
   } else {
-    $('play').update('Stop'); if(entry) {entry.value="";} 
+    $('play').update('Stop'); if(entry) {entry.value = "";} 
     p ++; clearTimeout(Timeout);
-    Jazz.MidiOut(0xb0,120,0); rcd.push([]); updateTime();
+    Jazz.MidiOut(0xb0, 120, 0); rcd.push([]); updateTime();
   }
-}
+};
 
 Event.observe($('play'), 'dblclick', Stop, false);
 
 function Stop(){
-  clearTimeout(Timeout); $('play').update('Play'); clearTimeout(update); entry.value=""; setTimeout(Reset, period);
-}
+  clearTimeout(Timeout); $('play').update('Play'); clearTimeout(update); entry.value = ""; setTimeout(Reset, period);
+};
 
 Event.observe($('flow'), 'click', Flow, false);
 
 function Flow(){
-  Jazz.trans = Jazz.trans === false ? true: false; 
-  if(Jazz.trans){
+  trans = trans === false ? true: false; 
+  if(trans){
   $('flow').update('Transmit'); Reset();
   } else { 
   $('flow').update('Local');
   }
-}
+};
 
 function volume(vol){
   var range = $R(0, 15);
   range.each(function(i){
 	 Jazz.MidiOut(0xb0 + i, 7, vol);
   });
-}
+};
 
 function Pan(pan){
   var range = $R(0, 15);
   range.each(function(i){
     Jazz.MidiOut(0xb0 + i, 10, pan);
   });
-}
+};
 
 function Mod(mod){
   var range = $R(0, 15);
   range.each(function(i){
     Jazz.MidiOut(0xb0 + i, 1, mod);
   });
-}
+};
  
-function exe(some,x,y,z){
-  some(x,y,z);
-}
+function exe(some, x, y, z){
+  some(x, y, z);
+};
 
 function execute(someFunction, value){
   someFunction(value);
-}
+};
 
 opacity = 0;
 new Control.Slider('opacity','track1',{
-  sliderValue:0,
-  onSlide:function(opacity){$('debug1').update(opacity); changeSyn();},
-  onChange:function(opacity){$('debug1').update(opacity); changeSyn();}
+  sliderValue: 0,
+  onSlide: function(opacity){$('debug1').update(opacity); changeSyn();},
+  onChange: function(opacity){$('debug1').update(opacity); changeSyn();}
 });
 
 vol = 127; pan = 64; mod = 0;
 Values = $R(0, 127);
 new Control.Slider(['modulation','pan','volume'],'track2',{
-  values: Values,range:$R(0,127),
+  values: Values, range: $R(0,127),
   sliderValue: [0, 64, 127],
-  onSlide:function(v){vol = v[2]; execute(volume, vol); pan = v[1]; execute(Pan, pan); mod = v[0]; execute(Mod, mod);},
-  onChange:function(v){ $('debug2').update(v.inspect());vol = v[2]; execute(volume, vol); pan = v[1]; execute(Pan, pan); mod = v[0]; execute(Mod, mod);}
+  onSlide: function(v){vol = v[2]; execute(volume, vol); pan = v[1]; execute(Pan, pan); mod = v[0]; execute(Mod, mod);},
+  onChange: function(v){$('debug2').update(v.inspect()); vol = v[2]; execute(volume, vol); pan = v[1]; execute(Pan, pan); mod = v[0]; execute(Mod, mod);}
 }); 
 
 Scales.each(function(i){
@@ -375,15 +382,16 @@ Event.observe($('_scales'), 'change', ShowValue, false);
 
 function ShowValue(){
   current_scale = $('_scales').selectedIndex;
-}
+};
       
 keyAllowed = {}; 
-document.onkeydown = function(e){ $('_scales').blur();
+document.onkeydown = function(e){ 
+  $('_scales').blur();
   if (keyAllowed [e.which] === false) return;
   keyAllowed [e.which] = false;
-  var e=window.event || e;
+  var e = window.event || e;
   if (e.keyCode == 38){
-  	 tonic++ ;
+  	 tonic ++ ;
     Object.keys(steps[current_scale]).map(function(value, index){
       steps[current_scale][value] ++ ;
     })
@@ -396,44 +404,45 @@ document.onkeydown = function(e){ $('_scales').blur();
   };
   var key = steps[current_scale][e.keyCode];
   if(key){
-    var k=document.getElementById(key); k.className="on";
+    var k = document.getElementById(key); k.className = "on";
     var rm = key%12; 
     channels(rm, key, 1); output(rm, key, 1);
     var n = key; cntl_bg(key); 
     $('note').update(key);
   }
-}
-document.onkeyup = function(e){ keyAllowed [e.which] = true;
-  var e=window.event || e;
+};
+document.onkeyup = function(e){ 
+  keyAllowed [e.which] = true;
+  var e = window.event || e;
   var key = steps[current_scale][e.keyCode];
   if(key){
-    var k=document.getElementById(key); k.className=""; $('note').update();
+    var k = document.getElementById(key); k.className = ""; $('note').update();
     var rm = key%12;
     channels(rm, key, 0); output(rm, key, 0);
   }
-}
+};
 
 var Key;
 document.onmousedown = function(e){
-  var e=window.event || e;
+  var e = window.event || e;
   var k;
   if (e.target) k = e.target;
   else if (e.srcElement) k = e.srcElement;
-  var m=parseInt(k.id); var rm = m%12;
-  if(k.id==m)
+  var m = parseInt(k.id); var rm = m % 12;
+  if(k.id == m)
   {document.onmouseup(e); channels(rm, m, 1); output(rm, m, 1);
-  k.className="on"; Key=k;
+  k.className = "on"; Key=k;
   cntl_bg(m); notate(m);
   }
   return true;
-}
+};
 document.onmouseup = function(e){
   if(Key){ 
-    var m=parseInt(Key.id); var rm = m%12;
+    var m = parseInt(Key.id); var rm = m % 12;
     channels(rm, m, 0); output(rm, m, 0);
-    Key.className=""; Key=""; $('note').update();
+    Key.className = ""; Key = ""; $('note').update();
   }
-}
+};
 
 sn.each(function(i){
   var opt = new Element('option').update(i);
@@ -443,7 +452,7 @@ sn.each(function(i){
 Event.observe(selSyn, 'change', changeSyn, false);
 
 function changeSyn(){ 
-  colorMap = MusicTheory.Synesthesia.map();document.body.setStyle({background: colorMap[12].hsl});
+  colorMap = MusicTheory.Synesthesia.map(); document.body.setStyle({background: colorMap[12].hsl});
 }
 
 gmidi.each(function(i){
@@ -458,32 +467,32 @@ function changeIn(){
   if(selIn.selectedIndex > 0){
   current_in=Jazz.MidiInOpen(selIn[selIn.selectedIndex].value,midiProc);
   } else {
-  Jazz.MidiInClose(); current_in=''; Reset();
+  Jazz.MidiInClose(); current_in = ''; Reset();
   var range = $R(0, 15);
   range.each(function(i){
   Jazz.MidiOut(0xb0 + i,120,0);
   });
   selIn.blur();
   }
-  for(var i=0;i<selIn.length;i++){
-  if(selIn[i].value==current_in) selIn[i].selected=1;
+  for(var i = 0; i < selIn.length; i++){
+  if(selIn[i].value == current_in) selIn[i].selected = 1;
   }
   }
   catch(err){}
-}
+};
 
 Event.observe($('midiOut'), 'change', changeOut, false);
 
 function changeOut(){
   try{
-  current_out=Jazz.MidiOutOpen(selOut.selectedIndex); changeSnd(); console.log(current_out);
-  for(var i=0;i<selOut.length;i++){
-  if(selOut[i].value==current_out) selOut[i].selected=1;
+  current_out = Jazz.MidiOutOpen(selOut.selectedIndex); changeSnd(); console.log(current_out);
+  for(var i = 0; i < selOut.length; i ++){
+  if(selOut[i].value == current_out) selOut[i].selected = 1;
   }
   selOut.blur();
   }
  catch(err){}
-}
+};
 
 Event.observe($('midiSnd'), 'change', changeSnd, false);
  
@@ -491,20 +500,26 @@ function changeSnd(){
   current_snd=selSnd.selectedIndex;
   var range = $R(0, 15);
   range.each(function(i){
-    Jazz.MidiOut(192 + i,current_snd,0);
+    Jazz.MidiOut(192 + i, current_snd, 0);
   });
   selSnd.blur();
-}
+};
 
 function handleChange(cb){
   [0,1,2,3,4,5,6,7,8,10,11,12].each(function(i){
     if(cb.checked == true){
-    Jazz.MidiOut(0xb0 + i,64, 64 );
+    Jazz.MidiOut(0xb0 + i, 64, 64 );
     }else{
-    Jazz.MidiOut(0xb0 + i,64,0);
+    Jazz.MidiOut(0xb0 + i, 64, 0);
     }
   }); 
 }
+var odd;
+function light_out(cb){
+  if(cb.checked == false){
+    Reset();
+  }  
+};
 
 Event.observe($('panic'), 'click', Reset, false);
 
@@ -515,19 +530,19 @@ function Reset(){
   });
   var range = $R(0, 15); var l_i = $("in").getElementsByTagName('LI'); var l_o = $("out").getElementsByTagName('LI');
   range.each(function(i){
-    Jazz.MidiOut(0xb0 + i,123, 0); Jazz.MidiOut(0xb0 + i,121, 0); l_i[i].setStyle({backgroundColor: '#ced'}); l_o[i].setStyle({backgroundColor: '#cde'});
+    Jazz.MidiOut(0xb0 + i, 123, 0); Jazz.MidiOut(0xb0 + i, 121, 0); l_i[i].setStyle({backgroundColor: '#CAE1D7'}); l_o[i].setStyle({backgroundColor: '#DDEAF8'});
   });
-}
+};
 
 try{
-  current_out=Jazz.MidiOutOpen(0);
-  var list=Jazz.MidiOutList();
-  for( var i = 0; i < list.length; i++){
-  selOut[selOut.length]=new Option(list[i],list[i],list[i]==current_out,list[i]==current_out);}
-  current_in=Jazz.MidiInOpen(0,midiProc);
-  var list=Jazz.MidiInList();
-  for( var i = 0; i < list.length; i++){
-  selIn[selIn.length]=new Option(list[i],list[i],list[i]==current_in,list[i]==current_in);}
+  current_out = Jazz.MidiOutOpen(0);
+  var list = Jazz.MidiOutList();
+  for( var i = 0; i < list.length; i ++){
+  selOut[selOut.length] = new Option(list[i], list[i], list[i] == current_out,list[i] == current_out);}
+  current_in = Jazz.MidiInOpen(0, midiProc);
+  var list = Jazz.MidiInList();
+  for( var i = 0; i < list.length; i ++){
+  selIn[selIn.length] = new Option(list[i], list[i], list[i] == current_in,list[i] == current_in);}
 }
 catch(err){}
 
