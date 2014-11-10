@@ -39,6 +39,7 @@
 <input type="radio" name="temperament" id="53_edob" value = 3 /><i><b> 53-edo b </b><i/></p>
 </div>
 
+
 <div id="track2">
 <div id="modulation" title="modulation"></div>
 <div id="pan" title="pan"></div>
@@ -104,7 +105,7 @@ function Prompt(){
   var room = prompt('type a room name, "jazz"', "jazz")
   // Emit ready event with room name.
   App.socket.emit('ready', room);   
-};
+}
 
 window.onbeforeunload = function(){
   App.socket.disconnect();
@@ -115,37 +116,37 @@ App.socket.on('announce', function(data){
   Room = $("room"); 
   var newP = new Element('p').update(data.message+ new Date().toString());
   Room.insert(newP);
-});
+})
  
 App.socket.on('time', App.time);
 
 App.time = function(data){
   var a = data.a; var b = data.b; var c = data.c;
   exe(message, a, b, c); bgrnd(b, c);
-};
+}
 
 colorMap = [];
  
 function cntl_bg(n){map = colorMap[n];
   if (typeof map !== 'undefined') 
   var c2 = $('c2'); if (map) c2.setStyle({backgroundColor: map.hsl});	
-};
+}
 
 function notate(n){
   var scientific = teoria.note.fromMIDI(n).scientific(); $('note').update("midi number: <b>" +  n + "</b> scientific:<b> " + scientific + "</b>");
-};
+}
 
 App.socket.on('notes', function(data){
   var a = data.notes.a; var b = data.notes.b; var c = data.notes.c;
   exe(message, a, b, c); bgrnd(b, c);
-}); 
+}) 
 
 function bgrnd(b,c){ 
   var k=document.getElementById(b); var Class = {0 : "", 127 : "on"};
   k.className = Class[c];
   // control the background
   cntl_bg(b); notate(b);
-};
+}
 
 // Callback function
 function midiProc(t, a, b, c){ 
@@ -154,44 +155,44 @@ function midiProc(t, a, b, c){
   if (trans == 0) App.midi(data)
   //sending mididata to server      
   if (trans == 1) App.socket.emit('mididata', data); 
-};
+}
 
 App.socket.on('midi', App.midi)
 App.midi = function(data){ 
   midi(data);
-};
+}
 
 App.socket.on('midi', function(data){
   if (data) midi(data);
-}); 
+}) 
 
 function message(x, y, z){
   Jazz.MidiOut(x, y, z);
-};
+}
 
 function channels(rm, key, updown){
   var vlm = [0, vol];
   var chnn = [[0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,0x88,0x8a,0x8b,0x8c], [0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,0x98,0x9a,0x9b,0x9c]];
   exe(message, chnn[updown][rm], key, vlm[updown]);    
-};
+}
 
 function output(rm, key, updown){
   var li = $("out").getElementsByTagName('LI'); var clr = ['#DDEAF8', '#b9ff61']; 
   var chnset = {0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:10,10:11,11:12,12:13,13:14,14:15,15:16}
   li[chnset[rm]].setStyle({backgroundColor: clr[updown]});
-};
+}
 
 function input(curr, updown){
   var li = $("in").getElementsByTagName('LI'); var clr = ['#CAE1D7', '#b9ff61']; 
   if (curr) li[curr].setStyle({backgroundColor: clr[updown]});
-};
+}
 
 function tmpr(){
   this[arr].each(function(i){
   _log(i.x, i.y, i.z); //pitch wheel message
   exe(message, i.x, i.y, i.z);
   });
-};
+}
 
 corr = [
 [{x : 224,y : 0,z : 64},{x : 225,y : 99,z : 56},{x : 226,y : 120,z : 61},{x : 227,y : 91,z : 54},{x : 228,y : 111,z : 59},{x : 229,y : 4,z : 65},
@@ -393,7 +394,7 @@ document.onkeydown = function(e){
   	 tonic ++ ;
     Object.keys(steps[current_scale]).map(function(value, index){
       steps[current_scale][value] ++ ;
-    });
+    })
   }; 
   if (e.keyCode == 40) {
   	 tonic-- ;
